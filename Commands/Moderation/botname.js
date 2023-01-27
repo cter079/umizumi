@@ -11,6 +11,16 @@ export const data = new SlashCommandBuilder()
             interaction.reply({content: 'This command can only be executed in a server'});
             return;
         }
+
+        if(!interaction.member.permissions.has('MANAGE_GUILD')){
+            interaction.reply({content: 'You do not have permission to change the bot name'});
+            return;
+        }
+        if(!interaction.guild.me.permissions.has('MANAGE_NICKNAMES')){
+            interaction.reply({content: 'I do not have permission to change the bot name'});
+            return;
+        }
+        
         const name = interaction.options.getString('name');
         const bot = interaction.guild.members.cache.get(interaction.client.user.id);
         if(!bot){

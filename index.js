@@ -52,7 +52,13 @@ for(const file of modCommandFiles){
     client.modSlashCommands.set(command.data.name, command);
     commands.push(command.data.toJSON());
 }
-
+client.funSlashCommands = new Collection();
+const funCommandFiles = fs.readdirSync('./Commands/Fun').filter(file => file.endsWith('.js'));
+for(const file of funCommandFiles){
+    const command = await import(`./Commands/Fun/${file}`);
+    client.funSlashCommands.set(command.data.name, command);
+    commands.push(command.data.toJSON());
+}
 
 
 
@@ -96,7 +102,7 @@ client.on('interactionCreate', async interaction => {
     if(!interaction.isCommand()) return;
 
     const {commandName} = interaction;
-    const command = client.infoSlashCommands.get(commandName) || client.modSlashCommands.get(commandName);
+    const command = client.infoSlashCommands.get(commandName) || client.modSlashCommands.get(commandName) || client.funSlashCommands.get(commandName);
 
 
 

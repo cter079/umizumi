@@ -36,8 +36,7 @@ export async function execute(interaction) {
             
         )
         .setColor('#0099ff')
-        .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
-
+        .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
         .setTimestamp();
 
 
