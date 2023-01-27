@@ -1,8 +1,9 @@
 
 import {config }from 'dotenv'
-import {Client, GatewayIntentBits, PermissionsBitField, Routes, ActivityType} from 'discord.js';
+import {Client, GatewayIntentBits, PermissionsBitField, Routes, ActivityType, SlashCommandBuilder} from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Collection } from 'discord.js';
+import json from './replies.json' assert { type: 'json' };
 import fs from 'fs';
 
 const prefix = "/";
@@ -73,6 +74,8 @@ client.on ('ready', () => {
             status: 'online'
         });
 
+        client.user.setUsername('Umizumi');
+
     client.user.setAvatar('https://i.ytimg.com/vi/4QoM-bnASnc/maxresdefault.jpg');
 });
 client.login(token);
@@ -115,6 +118,19 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
     }
 });
+
+client.on('messageCreate', async message => {
+    if(message.author.bot) return;
+    if(message.content.includes(client.user.id)){
+        const replies = json
+        const random = Math.floor(Math.random() * replies.length);
+        //send the message
+        message.reply(replies[random]['reply']);
+    }
+
+} );
+
+
 
 
 
