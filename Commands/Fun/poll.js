@@ -1,16 +1,14 @@
-import { EmbedBuilder } from "@discordjs/builders";
-import { SlashCommandBuilder } from "discord.js";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
 
-
-export const data = new SlashCommandBuilder()
-    .setName('poll')
-    .setDescription('Create a poll')
-    .addStringOption(option => option.setName('question').setDescription('The question to ask').setRequired(true))
-    .addStringOption(option => option.setName('option1').setDescription('The first option').setRequired(true))
-    .addStringOption(option => option.setName('option2').setDescription('The second option').setRequired(true))
-   
-
-export async function execute(interaction) {
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('poll')
+        .setDescription('Create a poll')
+        .addStringOption(option => option.setName('question').setDescription('The question to ask').setRequired(true))
+        .addStringOption(option => option.setName('option1').setDescription('The first option').setRequired(true))
+        .addStringOption(option => option.setName('option2').setDescription('The second option').setRequired(true)),
+    async execute(interaction) {
     const question = interaction.options.getString('question');
     const option1 = interaction.options.getString('option1');
     const option2 = interaction.options.getString('option2');
@@ -32,4 +30,6 @@ export async function execute(interaction) {
 
 
 }
+};
+
 

@@ -1,7 +1,7 @@
 //create a model that saves the log channel and welcome channel to the database
 
 
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const serverSchema = new mongoose.Schema({
     guildID: { type: String, required: true, unique: true },
@@ -13,5 +13,5 @@ const serverSchema = new mongoose.Schema({
     leaveChannel: { type: String, required: false },
 });
 
-export default mongoose.model('Server', serverSchema);
+module.exports = mongoose.model('Server', serverSchema);
     

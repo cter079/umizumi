@@ -1,15 +1,14 @@
-import { SlashCommandBuilder, GatewayIntentBits } from "discord.js";
-import { EmbedBuilder } from "@discordjs/builders";
-import  Permissions  from "discord.js";
-import { PermissionsBitField } from "discord.js";
-import Server from "../Database/Models/server.js"
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { Permissions, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder } = require('@discordjs/builders');
+const Server = require('../Database/Models/server.js');
 
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('unlock')
+        .setDescription('Unlock a channel'),
+    async execute(interaction) {
 
-export const data = new SlashCommandBuilder()
-    .setName('unlock')
-    .setDescription('Unlock a channel');
-
-export async function execute(interaction) {
     const channel = interaction.channel;
     const logChannel = await Server.findOne({ id: interaction.guild.id });
     const log = interaction.guild.channels.cache.get(logChannel.logChannel);
@@ -17,22 +16,11 @@ export async function execute(interaction) {
     if (!interaction.member.permissions.has('MANAGE_CHANNELS')) {
         return interaction.reply({ content: 'You do not have permission to unlock this channel', ephemeral: true });
     }
+    const everyoneRole = channel.guild.roles.cache.find(role => role.name === "@everyone");
     channel.permissionOverwrites.set([
         {
-          id: interaction.guild.id,
+          id: everyoneRole.id,
           allow: [PermissionsBitField.Flags.SendMessages],
-        }, {
-          id: interaction.guild.id,
-          allow: [PermissionsBitField.Flags.ViewChannel],
-        }, {
-          id: interaction.guild.id,
-          allow: [PermissionsBitField.Flags.ReadMessageHistory]
-        }, {
-           id: interaction.guild.id,
-          deny: [PermissionsBitField.Flags.CreatePublicThreads]
-        }, {
-          id: interaction.guild.id,
-          deny: [PermissionsBitField.Flags.CreatePrivateThreads]
         }
       ])
     const embed = new EmbedBuilder()
@@ -54,4 +42,5 @@ export async function execute(interaction) {
             }
             , 500);
 }
+};
 

@@ -1,20 +1,20 @@
-import { SlashCommandBuilder } from "discord.js";
-import User from '../Database/Models/user.js';
-import { EmbedBuilder } from "@discordjs/builders";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
+const User = require('../Database/Models/user.js');
 
-export const data = new SlashCommandBuilder()
-    .setName('xp')
-    .setDescription('Check your xp');
-
-export async function execute(interaction) {
-const user = await User.findOne({ userID: interaction.user.id, guildID: interaction.guild.id });
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('xp')
+        .setDescription('Check your xp'),
+    async execute(interaction) {
+        const user = await User.findOne({ userID: interaction.user.id, guildID: interaction.guild.id });
 if(!user){
     let newUser = await User.create({
         userID: interaction.user.id,
         guildID: interaction.guild.id,
         warns: 0,
         xp: 0,
-        level: 1
+        level: 0
     });
     newUser.save();
 
@@ -22,9 +22,10 @@ if(!user){
     .setTitle('XP')
     .setDescription('Check your xp')
     .addFields(
-        {name: 'Level', value: '1', inline: true},
+        {name: 'Level', value: '0', inline: true},
         {name: 'XP', value: '0', inline: true}
     )
+
 
 
     return interaction.reply({embeds: [embed]});
@@ -46,7 +47,8 @@ if(!user){
     return interaction.reply({embeds: [embed]});
 }
 
-
-
-
 }
+};
+
+
+

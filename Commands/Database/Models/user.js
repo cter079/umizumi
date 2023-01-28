@@ -1,7 +1,6 @@
 //create an exportable model for the user schema
+const mongoose = require('mongoose');
 
-
-import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
     userID: { type: String, required: true, unique: true },
@@ -12,6 +11,7 @@ const userSchema = new mongoose.Schema({
 
 });
 
-export default mongoose.model('User', userSchema);
-    
+
+module.exports = mongoose.model('User', userSchema);
+
 

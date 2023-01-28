@@ -1,21 +1,22 @@
-import { SlashCommandBuilder } from "discord.js";
-import { EmbedBuilder } from "@discordjs/builders";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
 
-export const data = new SlashCommandBuilder()
-    .setName('avatar')
-    .setDescription('Get the avatar of a user')
-    .addUserOption(option => option.setName('user').setDescription('The user to get the avatar of').setRequired(false));
-
-export async function execute(interaction) {
-    const user = interaction.options.getUser('user') || interaction.user;
-    const embed = new EmbedBuilder()
-        .setTitle(`${user.tag}'s avatar`)
-        .setImage(user.displayAvatarURL({dynamic: true, size: 512}))
-        .setColor(0x00AE86)
-        .setTimestamp()
-        .setFooter({
-            text: `Command Requested by: ${interaction.user.tag}`,
-            iconURL: interaction.user.displayAvatarURL()
-        });
-    interaction.reply({embeds: [embed]});
-}
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('avatar')
+        .setDescription('Get a user\'s avatar')
+        .addUserOption(option => option.setName('user').setDescription('The user\'s avatar to show')),
+    async execute(interaction) {
+        const user = interaction.options.getUser('user') || interaction.user;
+        const embed = new EmbedBuilder()
+            .setTitle(`${user.tag}'s avatar`)
+            .setImage(user.displayAvatarURL({dynamic: true, size: 512}))
+            .setColor(0x00AE86)
+            .setTimestamp()
+            .setFooter({
+                text: `Command Requested by: ${interaction.user.tag}`,
+                iconURL: interaction.user.displayAvatarURL()
+            });
+        interaction.reply({embeds: [embed]});
+    },
+};

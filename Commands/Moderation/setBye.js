@@ -1,15 +1,22 @@
-import { SlashCommandBuilder } from "discord.js";
-import { EmbedBuilder } from "@discordjs/builders";
-import Server from '../Database/Models/server.js';
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
+const { PermissionsBitField } = require('discord.js');
+const Server = require('../Database/Models/server.js');
 
-export const data = new SlashCommandBuilder()
-    .setName('setbye')
-    .setDescription('Set the bye channel')
-    .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the bye channel').setRequired(true));
-
-export async function execute(interaction) {
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('setbye')
+        .setDescription('Set the bye channel')
+        .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the bye channel').setRequired(true)),
+    async execute(interaction) {
     const channel = interaction.options.getChannel('channel');
     const guild = interaction.guild;
+
+    if(interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels) === false) {
+        interaction.reply({content: 'You do not have permission to use this command', ephemeral: true});
+        return;
+    }
+
     const embed = new EmbedBuilder()
         .setTitle('Set Bye Channel')
         .setDescription(`Set the bye channel to ${channel}`)
@@ -35,3 +42,4 @@ export async function execute(interaction) {
 
     interaction.reply({embeds: [embed]});
 }
+};

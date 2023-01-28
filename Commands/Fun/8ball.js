@@ -1,12 +1,13 @@
-import { SlashCommandBuilder } from "discord.js";
-import { EmbedBuilder } from "@discordjs/builders";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
 
-export const data = new SlashCommandBuilder()
-    .setName('8ball')
-    .setDescription('Ask the magic 8ball a question')
-    .addStringOption(option => option.setName('question').setDescription('The question to ask').setRequired(true));
 
-export async function execute(interaction) {
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('8ball')
+        .setDescription('Ask the magic 8ball a question')
+        .addStringOption(option => option.setName('question').setDescription('The question to ask').setRequired(true)),
+    async execute(interaction) {
     const question = interaction.options.getString('question');
     const responses = [
         'It is certain.',
@@ -37,5 +38,6 @@ export async function execute(interaction) {
           });
     interaction.reply({ embeds: [embed] });
 }
+};
 
   

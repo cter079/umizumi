@@ -1,18 +1,19 @@
-import { SlashCommandBuilder } from "discord.js";
-import { EmbedBuilder } from "@discordjs/builders";
-import Server from '../Database/Models/server.js';
-import { set } from "mongoose";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
+const Server = require('../Database/Models/server.js');
+const { Permissions, PermissionsBitField } = require('discord.js');
 
-export const data = new SlashCommandBuilder()
-    .setName('timeout')
-    .setDescription('Timeout a user')
-    .addUserOption(option => option.setName('user').setDescription('The user to timeout').setRequired(true))
-    .addStringOption(option => option.setName('reason').setDescription('The reason for the timeout').setRequired(false));
-
-export async function execute(interaction) {
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('timeout')
+        .setDescription('Timeout a user')
+        .addUserOption(option => option.setName('user').setDescription('The user to timeout').setRequired(true))
+        .addStringOption(option => option.setName('reason').setDescription('The reason for the timeout').setRequired(false)),
+    async execute(interaction) {
 
     const user = interaction.options.getUser('user');
-    const duration = interaction.options.getInteger('duration (in minutes)');
+    const duration2 = interaction.options.getString('duration (in minutes)');
+    const duration = parseInt(duration2);
     const reason = interaction.options.getString('reason');
     const logChannel = interaction.guild.channels.cache.get(server.logChannel);
     const log = interaction.guild.channels.cache.get(logChannel.logChannel);
@@ -46,3 +47,4 @@ export async function execute(interaction) {
 
 
 }
+};

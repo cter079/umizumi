@@ -1,15 +1,20 @@
-import { SlashCommandBuilder } from "discord.js";
-import Server from '../Database/Models/server.js';
-import { EmbedBuilder } from "@discordjs/builders";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
+const Server = require('../Database/Models/server.js');
 
-export const data = new SlashCommandBuilder()
-    .setName('setlog')
-    .setDescription('Set the log channel')
-    .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the log channel').setRequired(true));
-
-export async function execute(interaction) {
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('setlog')
+        .setDescription('Set the log channel')
+        .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the log channel').setRequired(true)),
+    async execute(interaction) {
     const channel = interaction.options.getChannel('channel');
     const guild = interaction.guild;
+
+    if(interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels) === false) {
+        interaction.reply({content: 'You do not have permission to use this command', ephemeral: true});
+        return;
+    }
     const embed = new EmbedBuilder()
         .setTitle('Set Log Channel')
         .setDescription(`Set the log channel to ${channel}`)
@@ -37,3 +42,4 @@ export async function execute(interaction) {
     
 
 }
+};

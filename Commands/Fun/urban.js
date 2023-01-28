@@ -1,13 +1,14 @@
-import { SlashCommandBuilder } from "discord.js";
-import fetch from 'node-fetch';
-import { EmbedBuilder } from "@discordjs/builders";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
+const fetch = require('node-fetch');
 
-export const data = new SlashCommandBuilder()
-    .setName('urban')
-    .setDescription('Search for a definition on Urban Dictionary')
-    .addStringOption(option => option.setName('query').setDescription('The query to search for').setRequired(true));
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('urban')
+        .setDescription('Search for a definition on Urban Dictionary')
+        .addStringOption(option => option.setName('query').setDescription('The query to search for').setRequired(true)),
+    async execute(interaction) {
 
-export async function execute(interaction) {
     const query = interaction.options.getString('query');
     const response = await fetch(`https://api.urbandictionary.com/v0/define?term=${query}`);
     const json = await response.json();
@@ -31,3 +32,4 @@ export async function execute(interaction) {
     interaction.reply({embeds: [embed]});
  
 }
+};

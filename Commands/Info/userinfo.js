@@ -1,15 +1,15 @@
-import { SlashCommandBuilder } from "discord.js";
-import { EmbedBuilder } from "discord.js";
-import User from "../Database/Models/user.js";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
+const User = require('../Database/Models/user.js');
 
-export const data = new SlashCommandBuilder()
-    .setName('userinfo')
-    .setDescription('Get info about a user')
-    .addUserOption(option => option.setName('user').setDescription('The user to get info on').setRequired(false));
-
-export async function execute(interaction) {
-    const user = interaction.options.getUser('user') || interaction.user;
-    const data = await User.findOne({ userID: user.id, guildID: interaction.guild.id });
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('userinfo')
+        .setDescription('Get info about a user')
+        .addUserOption(option => option.setName('user').setDescription('The user to get info on').setRequired(false)),
+    async execute(interaction) {
+        const user = interaction.options.getUser('user') || interaction.user;
+        const data = await User.findOne({ userID: user.id, guildID: interaction.guild.id });
 
     //get 
     const member = interaction.guild.members.cache.get(user.id);
@@ -26,8 +26,11 @@ export async function execute(interaction) {
         {name: 'Roles', value: roles}
 
     )
-    .setColor(member.displayHexColor)
+    .setColor(0x00AE86)
     .setFooter({text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL()})
     .setTimestamp();
     interaction.reply({ embeds: [embed] });
 }
+};
+
+

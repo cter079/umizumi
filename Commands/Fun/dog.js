@@ -1,12 +1,12 @@
-import { SlashCommandBuilder } from "discord.js";
-import fetch from 'node-fetch';
-import { EmbedBuilder } from "@discordjs/builders";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
+const fetch = require('node-fetch');
 
-export const data = new SlashCommandBuilder()
-    .setName('dog')
-    .setDescription('Get a random dog image/gif');
-
-export async function execute(interaction) {
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('dog')
+        .setDescription('Get a random dog image/gif'),
+    async execute(interaction) {
     const response = await fetch('https://random.dog/woof.json');
     const json = await response.json();
     const embed = new EmbedBuilder()
@@ -16,3 +16,4 @@ export async function execute(interaction) {
         .setTimestamp();
     interaction.reply({ embeds: [embed] });
 }
+};

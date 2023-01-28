@@ -1,25 +1,33 @@
-import { SlashCommandBuilder } from "discord.js";
-import fetch from 'node-fetch';
-import { EmbedBuilder } from "@discordjs/builders";
-import Server from '../Database/Models/server.js';
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { PermissionsBitField } = require('discord.js');
+const { EmbedBuilder } = require('@discordjs/builders');
+const Server = require('../Database/Models/server.js');
+const {Permissions} = require('discord.js');
 
-export const data = new SlashCommandBuilder()
-    .setName('kick')
-    .setDescription('Kick a user')
-    .addUserOption(option => option.setName('user').setDescription('The user to kick').setRequired(true))
-    .addStringOption(option => option.setName('reason').setDescription('The reason for the kick').setRequired(false));
 
-export async function execute(interaction) {
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('kick')
+        .setDescription('Kick a user')
+        .addUserOption(option => option.setName('user').setDescription('The user to kick').setRequired(true))
+        .addStringOption(option => option.setName('reason').setDescription('The reason for the kick').setRequired(false)),
+    async execute(interaction) {
     const user = interaction.options.getUser('user');
     const reason = interaction.options.getString('reason');
     const member = interaction.guild.members.cache.get(user.id);
     const logChannel = await Server.findOne({id: interaction.guild.id});
     const log = interaction.guild.channels.cache.get(logChannel.logChannel);
+    const bot = interaction.guild.members.cache.get(interaction.client.user.id);
+
+//check if the user has permission to kick members
+if(!interaction.member.permissions.has(PermissionsBitField.Flags.KickMembers)) return interaction.reply({content: 'You do not have permission to kick members', ephemeral: true});
+if(!bot.permissions.has(PermissionsBitField.Flags.KickMembers)) return interaction.reply({content: 'I do not have permission to kick members', ephemeral: true});
 
 
 
-    if(!interaction.member.permissions.has('BAN_MEMBERS')) return interaction.reply({content: 'You do not have permission to kick members', ephemeral: true});
-    if(!interaction.guild.me.permissions.has('BAN_MEMBERS')) return interaction.reply({content: 'I do not have permission to kick members', ephemeral: true});
+
+
+
 
     if(member.roles.highest.position >= interaction.member.roles.highest.position) return interaction.reply({content: 'You cannot kick this member', ephemeral: true});
 
@@ -42,6 +50,8 @@ export async function execute(interaction) {
     log.send({embeds: [embed]});
     }
 }
+};
+
 
 
 

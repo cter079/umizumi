@@ -1,15 +1,22 @@
-import { SlashCommandBuilder } from "discord.js";
-import Server from '../Database/Models/server.js';
-import { EmbedBuilder } from "@discordjs/builders";
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('@discordjs/builders');
+const Server = require('../Database/Models/server.js');
 
-export const data = new SlashCommandBuilder()
-    .setName('setwelcome')
-    .setDescription('Set the welcome channel')
-    .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the welcome channel').setRequired(true));
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('setwelcome')
+        .setDescription('Set the welcome channel')
+        .addChannelOption(option => option.setName('channel').setDescription('The channel to set as the welcome channel').setRequired(true)),
+    async execute(interaction) {
 
-export async function execute(interaction) {
 const channel = interaction.options.getChannel('channel');
 const guild = interaction.guild;
+
+if(interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels) === false) {
+    interaction.reply({content: 'You do not have permission to use this command', ephemeral: true});
+    return;
+}
+
 const embed = new EmbedBuilder()
     .setTitle('Set Welcome Channel')
     .setDescription(`Set the welcome channel to ${channel}`)
@@ -36,4 +43,5 @@ else {
 interaction.reply({embeds: [embed]});
 }
 
+};
 
