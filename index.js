@@ -173,28 +173,30 @@ client.on('messageCreate', async message => {
         user.xp += randomXp;
         user.save();
 
-    }
-    if(user.xp >= 500){
-        user.level += 1;
-        user.xp = 0;
-        if(message.author.bot) return;
-        const embed = new EmbedBuilder()
-        .setTitle('Level up!')
-        .setThumbnail(message.author.avatarURL())
-        .setDescription(`Congratulations ${message.author} you leveled up to level ${user.level}`)
-        .setColor(0x0000ff);
-
-//send the message to the level up channel
-        const levelUpChannelID = await Server.findOne({
-            id: message.guild.id
-        });
-        const levelUpChannel = message.guild.channels.cache.get(levelUpChannelID.levelUp);
-        if(!levelUpChannel) return;
-        levelUpChannel.send({embeds: [embed]});
-
-       
-
-
+        if(user.xp >= 500){
+            user.level += 1;
+            user.xp = 0;
+            if(message.author.bot) return;
+            const embed = new EmbedBuilder()
+            .setTitle('Level up!')
+            .setThumbnail(message.author.avatarURL())
+            .setDescription(`Congratulations ${message.author} you leveled up to level ${user.level}`)
+            .setColor(0x0000ff);
+    
+    //send the message to the level up channel
+            const levelUpChannelID = await Server.findOne({
+                id: message.guild.id
+            });
+            const levelUpChannel = message.guild.channels.cache.get(levelUpChannelID.levelUp);
+            if(!levelUpChannel) return;
+            levelUpChannel.send({embeds: [embed]});
+    
+           
+    
+    
+    
+        }
+    
 
     }
 });

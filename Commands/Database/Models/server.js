@@ -11,6 +11,7 @@ const serverSchema = new mongoose.Schema({
     leaveMessage: { type: String, required: false },
     levelUp: { type: String, required: false },
     leaveChannel: { type: String, required: false },
+
 });
 
 module.exports = mongoose.model('Server', serverSchema);
