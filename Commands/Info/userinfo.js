@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from "discord.js";
 import { EmbedBuilder } from "discord.js";
+import User from "../Database/Models/user.js";
 
 export const data = new SlashCommandBuilder()
     .setName('userinfo')
@@ -8,6 +9,9 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
     const user = interaction.options.getUser('user') || interaction.user;
+    const data = await User.findOne({ userID: user.id, guildID: interaction.guild.id });
+
+    //get 
     const member = interaction.guild.members.cache.get(user.id);
     const roles = member.roles.cache.map(role => role.toString()).join(' ');
     const embed = new EmbedBuilder()
@@ -18,7 +22,9 @@ export async function execute(interaction) {
         {name: 'Nickname', value: member.nickname || 'None', inline: true},
         {name: 'Joined Server', value: member.joinedAt.toDateString(), inline: true},
         {name: 'Joined Discord', value: user.createdAt.toDateString(), inline: true},
+        {name: 'Level', value: `Level ${data.level}`, inline: true},
         {name: 'Roles', value: roles}
+
     )
     .setColor(member.displayHexColor)
     .setFooter({text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL()})
