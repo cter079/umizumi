@@ -24,7 +24,7 @@ module.exports = {
                 { name: 'Server ID', value: `${interaction.guild.id}` },
 
             )
-            .setColor('#0099ff')
+            .setColor(0x00AE86)
             .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
             .setTimestamp();
 
