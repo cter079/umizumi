@@ -281,10 +281,7 @@ client.on('messageCreate', async message => {
         message.react('👋');
 
     }
-    if(message.content.has('hey' || 'Hey' || 'HEY')){
-        message.react('👋');
-
-    }
+  
     if(message.content.includes('doei' || 'Doei' || 'DOEI')){
         message.react('👋');
 
