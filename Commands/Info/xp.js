@@ -20,7 +20,7 @@ if(!user){
 
     const embed = new EmbedBuilder()
     .setTitle('XP')
-    .setDescription('Check your xp')
+    .setDescription('Check your xp and level. Need 500xp to level up') 
     .addFields(
         {name: 'Level', value: '0', inline: true},
         {name: 'XP', value: '0', inline: true}
