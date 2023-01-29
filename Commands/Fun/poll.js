@@ -21,7 +21,7 @@ module.exports = {
             text: `Command Requested by: ${interaction.user.tag}`,
             iconURL: interaction.user.displayAvatarURL(),
           });
-const msg = interaction.channel.send({ embeds: [embed] });
+const msg = await interaction.channel.send({ embeds: [embed] });
 
 
     
