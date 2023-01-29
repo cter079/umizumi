@@ -281,7 +281,7 @@ client.on('messageCreate', async message => {
         message.react('👋');
 
     }
-    if(message.content.includes('hi' || 'Hi' || 'HI')){
+    if(message.content.has('hey' || 'Hey' || 'HEY')){
         message.react('👋');
 
     }
@@ -307,7 +307,7 @@ client.on('messageCreate', async message => {
 
 client.on('messageCreate', async message => {
     if(message.author.bot) return;
-    if(message.content.length > 100){
+    if(message.content.length > 300){
         message.channel.send('Please do not spam!');
         message.author.send('Please do not spam!');
         message.delete();
@@ -328,6 +328,21 @@ client.on('messageCreate', async message => {
     }
 }
 );
+
+//dont let people send more than 5 messages in 5 seconds
+client.on('messageCreate', async message => {
+    if(message.author.bot) return;
+    const messages = await message.channel.messages.fetch({limit: 5});
+    if(messages.size === 5 && messages.every(m => m.author.id === message.author.id)){
+        message.channel.send('Please do not spam!');
+        message.author.send('Please do not spam!');
+        //time out user for 1  minute
+message.member.timeout(60000);
+
+    }
+}
+);
+
 
 //if someone deletes a message send a message to the log channel
 client.on('messageDelete', async message => {
