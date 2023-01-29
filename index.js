@@ -90,7 +90,7 @@ client.on ('ready', () => {
 
     client.user.setAvatar('https://i.ytimg.com/vi/4QoM-bnASnc/maxresdefault.jpg');
 
-mongoose.connect(`mongodb+srv://cter079:cgQUwruoPqwQnvy1@cluster0.eudhufn.mongodb.net/test`, {
+mongoose.connect(`${process.env.CONNECTION_STRING}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
