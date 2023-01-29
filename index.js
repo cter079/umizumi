@@ -328,6 +328,8 @@ client.on('messageCreate', async message => {
 
 //dont let people send more than 5 messages in 5 seconds
 client.on('messageCreate', async message => {
+    //if user is admin
+    if(message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
     if(message.author.bot) return;
     const messages = await message.channel.messages.fetch({limit: 5});
     if(messages.size === 5 && messages.every(m => m.author.id === message.author.id)){
